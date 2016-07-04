@@ -15,6 +15,9 @@ for row in rows:
     if row[0] != row[3]:
         file.write("{\"lat\":%s ,\"lng\": %s,\"id\":%s,\"radius\":%s},"%(row[3], row[4],row[1],row[6]))
 
+cursor.close()
+conn.close()
+
 
 # sys.stdout.write("Content-type: text.html\r\n\r\n")
 # sys.stdout.write("")
