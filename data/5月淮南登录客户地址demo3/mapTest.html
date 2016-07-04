@@ -1,0 +1,140 @@
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>地图多点标注</title>
+<meta content="" name="keyword" />
+<meta content="width=device-width,initial-scale=1.0,user-scalable=0" name="viewport" />  
+<script type="text/javascript" src="js/addrs.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=fg493cr6UEjeaplnhuUNnc1zxFVxu7hV"></script>
+<script type="text/javascript" src="http://developer.baidu.com/map/custom/stylelist.js"></script>
+<style type="text/css">
+		body, html {width: 80%;height: 100%;margin:0 auto;font-family:"微软雅黑";}
+		#allmap{width:100%;height:90%;}
+		p{margin-left:5px; font-size:14px;}
+</style>
+</head>
+<body > 
+	<div id="allmap"></div>
+	<p><label>选择主题</label>
+			<select id="stylelist" onchange="changeMapStyle(this.value)"></select></p>
+ 
+</body>
+</html>
+<script type="text/javascript">
+	// 百度地图API功能	
+	var sContent =
+	"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>合肥工业大学</h4>" + 
+	"<img style='float:right;margin:4px' id='img' src='http://app.baidu.com/map/images/tiananmen.jpg' width='139' height='104' title='合肥工业大学'/>" + 
+	"<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>合肥工业大学坐落在合肥市中心.</p>" + 
+	"</div>";
+
+	//初始化模板选择的下拉框
+	var sel = document.getElementById('stylelist');
+	for(var key in mapstyles){
+		var style = mapstyles[key];
+		var item = new  Option(style.title,key);
+		sel.options.add(item);
+	}
+
+	function changeMapStyle(style){
+		map.setMapStyle({style:style});
+		$('#desc').html(mapstyles[style].desc);
+	}
+
+	map = new BMap.Map("allmap");
+	map.centerAndZoom(new BMap.Point(117.006189,32.6423513),11.5);//淮南中心点
+	var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+	var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+	var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}); //右上角，仅包含平移和缩放按钮
+	add_control();
+	 map.enableScrollWheelZoom(true);
+	var data =  [[117.006189,32.6423513],[117.016189,32.2423513],[117.026189,32.2323513],[117.036189,32.6523513],[117.116189,32.2423513],[117.526189,32.7323513],
+	[117.106189,32.7423513],[117.216189,32.8423513],[117.326189,32.2223513],[117.436189,32.5523513],[117.616189,32.4423513],[117.526189,32.3323513],
+	[117.006189,32.7823513],[117.656189,32.5433513],[117.586189,32.4323513],[117.136189,32.6523513],[117.216189,32.0623513],[117.776189,32.6523513],
+	[117.506189,32.7223513],[117.867189,32.2323513],[117.986189,32.6523513],[117.226189,32.7623513],[117.316189,32.2323513],[117.666189,32.4323513],
+	[117.706189,32.7823513],[117.716189,32.5623513],[117.106189,32.4423513],[117.346189,32.2223513],[117.416189,32.4623513],[117.556189,32.1223513],
+	[117.906189,32.9723513],[117.906189,32.9823513],[117.436189,32.6623513],[117.566189,32.4423513],[117.516189,32.4835123],[117.226189,32.4323513],
+	[117.306189,32.4323513],[117.896189,32.2323513],[117.666189,32.8823513],[117.886189,32.6623513],[117.616189,32.4223513],[117.336189,32.6523513],
+	[117.606189,32.7523513],[117.106189,32.9823513],[117.776189,32.9923513],[117.005189,32.7723513],[117.716189,32.9023513],[117.546189,32.8723513],
+	[117.076189,32.2323513],[117.566189,32.0823513],[117.336189,32.1123513],[117.456189,32.9923513],[117.816189,32.9923513],[117.896189,32.8723513],
+	[117.196189,32.1223513],[117.686189,32.1223513],[117.786189,32.0023513],[117.776189,32.0023513],[117.016189,32.8723513],[117.906189,32.3923513]];
+	 
+		//data就是json对象了，不需要在转换
+		var addrs = addrJson.addrs;
+	if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
+        var points = [];  // 添加海量点数据
+        for (var i = 0; i < addrs.length; i++) {
+			  points.push(new BMap.Point(addrs[i].lat,  addrs[i].lng));
+		}
+			var options = {
+				size: BMAP_POINT_SIZE_SMALL,
+				shape: BMAP_POINT_SHAPE_STAR,
+				color: '#E30601'
+			}
+				var pointCollection = new BMap.PointCollection(points, options);  // 初始化PointCollection
+				//pointCollection.addEventListener('click', function (e) {
+				  //alert('单击点的坐标为：' + e.point.lng + ',' + e.point.lat);  // 监听点击事件
+				//});
+		     map.addOverlay(pointCollection);  // 添加Overlay
+			addClickHandler(sContent,pointCollection);
+		 } else {
+			 alert('请在chrome、safari、IE8+以上浏览器查看本示例');
+		  } 
+   var data_info = [[117.301595,31.850581,sContent],
+					 [117.263276,31.868198,"地址：安徽农业大学"],
+					 [117.261462,31.851602,"地址：安徽大学"]];
+	var opts = {
+				//width : 250,     // 信息窗口宽度
+				//height: 80,     // 信息窗口高度
+				title : "信息窗口" , // 信息窗口标题
+				enableMessage:true//设置允许信息窗发送短息
+			   };
+/*	for(var i=0;i<data_info.length;i++){
+		var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));  // 创建标注
+		var content = data_info[i][2];
+		map.addOverlay(marker);               // 将标注添加到地图中
+		addClickHandler(content,marker);
+	}*/
+	function addClickHandler(content,marker){
+		marker.addEventListener("click",function(e){
+			openInfo(content,e);
+			 //图片加载完毕重绘infowindow
+		  $('#img').onload = function (){
+				   infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+			   }
+		   }
+		);
+	}
+	var infoWindow ;
+	function openInfo(content,e){
+		var p = e.point;
+		var point = new BMap.Point(p.lng, p.lat);
+		var temp = getJsonUnit(p.lng,p.lat);
+		var c  ="<h4 style='margin:0 0 5px 0;padding:0.2em 0'>ID:"+temp.id+"</h4><h4 style='margin:0 0 5px 0;padding:0.2em 0'>RADIUS:"+temp.radius+"</h4>";
+		//alert(temp.id);
+		infoWindow = new BMap.InfoWindow(c,opts);  // 创建信息窗口对象 
+		map.openInfoWindow(infoWindow,point); //开启信息窗口
+		
+	} 
+	function getJsonUnit(lat,lng){
+		for(var i= 0;i<addrs.length;i++){
+			var temp = addrs[i];
+			if(temp.lat==lat && temp.lng == lng){
+				return temp;
+			}
+		}
+	}
+	//添加控件和比例尺
+	function add_control(){
+		map.addControl(top_left_control);        
+		map.addControl(top_left_navigation);     
+		//map.addControl(top_right_navigation);    
+	}
+	//移除控件和比例尺
+	function delete_control(){
+		map.removeControl(top_left_control);     
+		map.removeControl(top_left_navigation);  
+		map.removeControl(top_right_navigation); 
+	}
+</script>
