@@ -11,13 +11,13 @@ import urllib2 , json
 #     filesp.close()
 
 
-ip = '117.57.210.198'
-# url = 'http://apis.baidu.com/rtbasia/ip_location/ip_location?ip=%s&v=1.1' % (ip)
+ip = '114.101.146.107'
+url = 'http://apis.baidu.com/rtbasia/ip_location/ip_location?ip=%s&v=1.1' % (ip)
 # url = 'http://apis.baidu.com/rtbasia/ip_maxcoverage/ip_maxcoverage?ip=%s&amp;v=1.1'%(ip)
-url = 'http://api.rtbasia.com/coor/get_maxcoverage?ip=%s&key=679b376c2f573415656b42277141b29d' % (ip)
+# url = 'http://api.rtbasia.com/coor/get_maxcoverage?ip=%s&key=679b376c2f573415656b42277141b29d' % (ip)
 req = urllib2.Request(url)
 
-# req.add_header("key", "679b376c2f573415656b42277141b29d")
+req.add_header("apikey", "679b376c2f573415656b42277141b29d")
 resp = urllib2.urlopen(req)
 content = resp.read()
 # jdata = json.loads(content)
