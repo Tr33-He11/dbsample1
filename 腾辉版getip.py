@@ -14,10 +14,11 @@ class user_location(object):
 
     def get_wgs(self):
 
-        url = 'http://apis.baidu.com/rtbasia/ip_maxcoverage/ip_maxcoverage?ip=%s&amp;v=1.1'%(self.ip)
+        # url = 'http://apis.baidu.com/rtbasia/ip_maxcoverage/ip_maxcoverage?ip=%s&amp;v=1.1'%(self.ip)
+        url = 'http://api.rtbasia.com/coor/get_maxcoverage?ip=%s&key=679b376c2f573415656b42277141b29d' % (self.ip)
         req = urllib2.Request(url)
 
-        req.add_header("apikey","679b376c2f573415656b42277141b29d")
+        # req.add_header("apikey","679b376c2f573415656b42277141b29d")
 
         resp = urllib2.urlopen(req)
         content = resp.read()
@@ -121,7 +122,7 @@ with open('E:\PycharmProjects\dbsample1\data\khh_ip_0033.201606.csv','r') as f1:
          hefei.ip = row[1]
          hefei.uid = row[0]
 
-         if hefei.ip == 'None':
+         if hefei.ip == 'None' or num > 500:
             continue
          hefei.list2sqlite()
          num = num + 1
