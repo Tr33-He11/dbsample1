@@ -2,8 +2,13 @@
 import urllib, urllib2,json,csv,sqlite3
 
 conn = sqlite3.connect('E:\PycharmProjects\location.db')
+
+
 cursor = conn.cursor()
-cursor.execute("create table location_specific (num int primary key,id varchar(15),ip varchar,lat float,lng float,radius float)")
+cursor.execute("create table ip2location3306 (num int primary key,id varchar(15),ip varchar,lat float,lng float,radius float)")
+cursor.close()
+conn.commit()
+conn.close()
 
 
 

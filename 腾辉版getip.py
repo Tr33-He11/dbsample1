@@ -87,10 +87,10 @@ class location2json(user_location):
 
             # print jsonD
 
-class location2sqlite(user_location):                                  #获取IP对应的GPS地址
+class location2sqlite(user_location):                                  #获取IP对应的GPS地址到数据库
 
 
-    def list2sqlite(self):
+    def list2sqlite(self):                                             #发送到数据库
 
         conn = sqlite3.connect('E:\PycharmProjects\location.db')
         cursor = conn.cursor()
@@ -101,7 +101,7 @@ class location2sqlite(user_location):                                  #获取IP
         radius = listcsv[2]
         data = [self.num,self.uid,self.ip,lat,yat,radius]
         try:
-            cursor.execute("insert into location_specific (num,id,ip,lat,lng,radius) values (?,?,?,?,?,?)",data)
+            cursor.execute("insert into ip2location3306 (num,id,ip,lat,lng,radius) values (?,?,?,?,?,?)",data)
         finally:
             # cursor.execute("select * from location")
             # values = cursor.fetchall()
@@ -113,8 +113,8 @@ class location2sqlite(user_location):                                  #获取IP
 
 
 # with open('G:\data\khh_ip_00200521pp.csv',"r") as f1:
-with open('E:\PycharmProjects\dbsample1\data\khh_ip_02530521.csv','r') as f1:
-     num = 0
+with open('E:\PycharmProjects\dbsample1\data\khh_ip_0033.201606.csv','r') as f1:
+     num = 1
      rawfile = csv.reader(f1)
      hefei = location2sqlite('n','dfff',0)
      for row in rawfile:
