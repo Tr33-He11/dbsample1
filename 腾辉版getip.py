@@ -102,7 +102,7 @@ class location2sqlite(user_location):                                  #获取IP
         radius = listcsv[2]
         data = [self.num,self.uid,self.ip,lat,yat,radius]
         try:
-            cursor.execute("insert into ip2location3306 (num,id,ip,lat,lng,radius) values (?,?,?,?,?,?)",data)
+            cursor.execute("insert into ip2location3506 (num,id,ip,lat,lng,radius) values (?,?,?,?,?,?)",data)
         finally:
             # cursor.execute("select * from location")
             # values = cursor.fetchall()
@@ -114,19 +114,20 @@ class location2sqlite(user_location):                                  #获取IP
 
 
 # with open('G:\data\khh_ip_00200521pp.csv',"r") as f1:
-with open('E:\PycharmProjects\dbsample1\data\khh_ip_0033.201606.csv','r') as f1:
+with open('E:\PycharmProjects\dbsample1\data\khh_ip_0035.201606.csv','r') as f1:
      num = 1
      rawfile = csv.reader(f1)
      hefei = location2sqlite('n','dfff',0)
      for row in rawfile:
          hefei.ip = row[1]
          hefei.uid = row[0]
+         hefei.num = num
 
-         if hefei.ip == 'None' or num > 500:
+         if hefei.ip == 'None':
             continue
          hefei.list2sqlite()
          num = num + 1
-         hefei.num = num
+
 
          print num
 
