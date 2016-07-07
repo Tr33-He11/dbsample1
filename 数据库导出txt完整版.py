@@ -7,10 +7,10 @@ conn = sqlite3.connect('E:\pycharmprojects\location.db')
 cursor = conn.cursor()
 conn.row_factory = sqlite3.Row
 # cursor.execute("select * from location_specific where num != lat")
-cursor.execute("select num,id, ip,lat,lng,radius  from ip2location3306 ")
+cursor.execute("select num,id, ip,lat,lng,radius  from ip2location25306 ")
 rows = cursor.fetchall()
 
-file = open('E:\pycharmprojects\dbsample1\data\location3306full.txt','a')            #写入txt文本
+file = open('E:\pycharmprojects\dbsample1\data\location25306full.txt','a')            #写入txt文本
 
 for row in rows:
     if row[0] != row[3]:
